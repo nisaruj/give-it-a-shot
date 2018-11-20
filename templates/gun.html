@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <h2 style="text-align: center;" id="alpha-val">ALPHA: </h2>
+        <h2 style="text-align: center;" id="beta-val">BETA: </h2>
+        <button class="btn btn-success btn-xl" id="shoot">SHOOT</button>
+        <script>
+            let alpha, beta, gamma;
+            let finishCalibrate = false
+
+            window.ondeviceorientation = function(event) {
+                alpha = Math.round(event.alpha)
+                beta = Math.round(event.beta)
+                gamma = Math.round(event.gamma)
+                this.document.getElementById('alpha-val').innerHTML = "ALPHA: " + alpha
+                this.document.getElementById('beta-val').innerHTML = "BETA: " + beta
+            }
+            
+            $("#shoot").click(function() {
+                if (!finishCalibrate) {
+                    $.get('http://' + window.location.hostname + ':5000/calibrate/' + alpha + '/' + beta + '/0/20', function( data ) {
+                        console.log(data)
+                        if (data == 'Finished') {
+                            finishCalibrate = true
+                        }
+                    });
+                } else {
+                    $.get('http://' + window.location.hostname + ':5000/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
+                        console.log(data)
+                    });
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: #393E46;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #F7F7F7;
+        }
+        .welcome {
+            margin: 0 auto;
+        }
+        .circle {
+            position: fixed;
+            width:10px;
+            height:10px;
+            background:red;
+        }
+        #errormsg {
+            color: #F8B500;
+        }
+        #reset {
+            text-align: right;
+        }
+        a {
+            font-size: 2vw;
+            color: #ff5e8c;
+        }
+    </style>
+    <div id="reset"><a href="/reset">RESET</a></div>
+    <br><br>
+    <div class="welcome">
+        <h1>H3110 W0RLD</h1>
+        <h2 id="calibrateMsg">You need to calibrate your gun!</h2>
+        <h2 id="step">Shoot at the center of the screen!</h2>
+        <h2 id="errormsg"></h2>
+    </div>
+    <div id="content"></div>
+    <script>
+        const tutorialMessage = ['Shoot at the center of the screen!', 'Shoot at top-left', 'Shoot at top-right', 'Shoot at bottom-right', 'Shoot at bottom-left', '']
+        let finishCalibrate = false
+        let step = 0
+        let socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('shoot', function( msg ) {
+            if (!finishCalibrate) {
+                alert('Calibrate your gun first!')
+            }
+            console.log( msg )
+            let coor = '(' + msg.x + ',' + msg.y + ')'
+            $( '#content' ).append('<div class="circle" style="left:' + msg.x + 'vw;top:' + msg.y + 'vh;"></div><br>')
+        })
+        socket.on('calibrate', function(msg) { 
+            if (msg.error == true) {
+                $('#errormsg').text('Error, shoot again.')
+            } else {
+                $('#errormsg').text('')
+            }
+            step = msg.step
+            if (step == 5) {
+                finishCalibrate = true
+                $('#calibrateMsg').text('Finished!')
+            }
+            $('#step').text(tutorialMessage[step])
+        })
+    </script>
+</body>
+</html>

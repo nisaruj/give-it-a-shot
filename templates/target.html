@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+
+    <style>
+        .circle {
+            position: fixed;
+            width:10px;
+            height:10px;
+            background:red;
+        }
+    </style>
+    <script>
+            let shots = [ {{ ','.join(shots) }} ]
+            console.log(shots)
+            for (let i=0;i<shots.length;i++) {
+                document.write('<div class="circle" style="top:' + shots[i][1] + 'vh;left:' + shots[i][0] + 'vw;"></div>')
+            }
+    </script>
+</body>
+</html>
