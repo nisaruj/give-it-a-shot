@@ -6,6 +6,7 @@
     <title>Project</title>
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="/static/typed.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 </head>
 <body>
@@ -41,20 +42,32 @@
     <div id="reset"><a href="/reset">RESET</a></div>
     <br><br>
     <div class="welcome">
-        <h1>H3110 W0RLD</h1>
-        <h2 id="calibrateMsg">You need to calibrate your gun!</h2>
+        <h1></h1> <!-- H3110 W0RLD -->
+        <h2 id="calibrateMsg"></h2> <!-- You need to calibrate your gun! -->
+        <br>
         <h2 id="step">Shoot at the center of the screen!</h2>
         <h2 id="errormsg"></h2>
     </div>
     <div id="content"></div>
     <script>
-        const tutorialMessage = ['Shoot at the center of the screen!', 'Shoot at top-left', 'Shoot at top-right', 'Shoot at bottom-right', 'Shoot at bottom-left', '']
+
+        $( document ).ready(function() {
+            const message = ['H3110 W0RLD', 'You need to calibrate your gun!']
+            let speed = 75
+            let delay = message[0].length * speed + speed
+            typeEffect($('h1'), speed, message[0])
+            setTimeout(function() {
+                typeEffect($('#calibrateMsg'), speed, message[1])
+            }, delay);
+        });
+
+        const tutorialMessage = ['Shoot at the center of the screen.', 'Shoot at top-left', 'Shoot at top-right', 'Shoot at bottom-right', 'Shoot at bottom-left', '']
         let finishCalibrate = false
         let step = 0
         let socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('shoot', function( msg ) {
             if (!finishCalibrate) {
-                alert('Calibrate your gun first!')
+                alert('Calibrate your gun first! (or press reset button)')
             }
             console.log( msg )
             let coor = '(' + msg.x + ',' + msg.y + ')'

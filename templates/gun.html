@@ -28,14 +28,14 @@
             
             $("#shoot").click(function() {
                 if (!finishCalibrate) {
-                    $.get('http://' + window.location.hostname + ':5000/calibrate/' + alpha + '/' + beta + '/0/20', function( data ) {
+                    $.get('http://' + document.domain + ':' + location.port + '/calibrate/' + alpha + '/' + beta + '/0/20', function( data ) {
                         console.log(data)
                         if (data == 'Finished') {
                             finishCalibrate = true
                         }
                     });
                 } else {
-                    $.get('http://' + window.location.hostname + ':5000/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
+                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
                         console.log(data)
                     });
                 }

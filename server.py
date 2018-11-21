@@ -65,7 +65,7 @@ def calculateSize(gyros):
 """ Index """
 @app.route("/")
 def index():
-    return "It's working!"
+    return "It's working!<br><a href='/gun'>Open virtual gun</a><br><a href='/cursor'>Open virtual cursor</a>"
 
 """ Reset calibrate setting """
 @app.route("/reset")
