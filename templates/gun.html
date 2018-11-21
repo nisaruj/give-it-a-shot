@@ -25,6 +25,14 @@
                 this.document.getElementById('alpha-val').innerHTML = "ALPHA: " + alpha
                 this.document.getElementById('beta-val').innerHTML = "BETA: " + beta
             }
+
+            setInterval(function(){ 
+                if (finishCalibrate) {
+                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
+                        console.log(data)
+                    });
+                }
+            }, 200);
             
             $("#shoot").click(function() {
                 if (!finishCalibrate) {

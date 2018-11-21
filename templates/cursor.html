@@ -71,7 +71,11 @@
             }
             console.log( msg )
             let coor = '(' + msg.x + ',' + msg.y + ')'
-            $( '#content' ).append('<div class="circle" style="left:' + msg.x + 'vw;top:' + msg.y + 'vh;"></div><br>')
+            /* Single shot */
+            //$( '#content' ).append('<div class="circle" style="left:' + msg.x + 'vw;top:' + msg.y + 'vh;"></div><br>')
+
+            /* Real time */
+            $('#content').html('<div class="circle" style="left:' + msg.x + 'vw;top:' + msg.y + 'vh;"></div><br>')
         })
         socket.on('calibrate', function(msg) { 
             if (msg.error == true) {
