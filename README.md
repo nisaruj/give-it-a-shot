@@ -5,11 +5,13 @@
 - python3
 - flask (pip)
 - flask_socketio (pip)
+- pyautogui (pip)
 
 ## Getting Started
 ```
 pip install flask
 pip install flask_socketio
+pip install pyautogui
 git clone https://github.com/nisaruj/give-it-a-shot.git
 cd give-it-a-shot
 python server.py
