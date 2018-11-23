@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect
 from flask_socketio import SocketIO
+import pyautogui
 import math
 
 app = Flask(__name__)
@@ -62,6 +63,10 @@ def calculateSize(gyros):
     h2 = abs((calculateVLen(normalLength, gyros[0], gyros[3]) + calculateVLen(normalLength, gyros[0], gyros[4])) / 2)
     return {'width': w1 + w2, 'height': h1 + h2}
 
+""" Get screen resolution """
+def getResolution():
+    return pyautogui.size()
+
 """ Index """
 @app.route("/")
 def index():
@@ -92,8 +97,8 @@ def cursor():
     return render_template("cursor.html")
 
 """ Shoot """
-@app.route("/shoot/<alpha>/<beta>/<gamma>/<dist>")
-def shoot(alpha, beta, gamma, dist):
+@app.route("/shoot/<alpha>/<beta>/<gamma>/<dist>/<isClicked>")
+def shoot(alpha, beta, gamma, dist, isClicked):
     global finishCalibrate
     global shots
     global gyros
@@ -118,7 +123,10 @@ def shoot(alpha, beta, gamma, dist):
     '''
 
     socketio.emit('shoot', {'x': X / screenSize['width'] * 100, 'y': Y / screenSize['height'] * 100})
-
+    pyautogui.moveTo(X * getResolution()[0] / screenSize['width'], Y * getResolution()[1] / screenSize['height'])
+    isClicked = int(isClicked)
+    if isClicked:
+        pyautogui.click()
     return "OK"
 
 """ Calibrate """

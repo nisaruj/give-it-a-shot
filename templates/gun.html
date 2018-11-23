@@ -36,7 +36,7 @@
 
             setInterval(function(){ 
                 if (status && finishCalibrate) {
-                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
+                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20/0', function( data ) {
                         console.log(data)
                     });
                 }
@@ -63,7 +63,7 @@
                         }
                     });
                 } else {
-                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
+                    $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20/1', function( data ) {
                         console.log(data)
                     });
                 }
