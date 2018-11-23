@@ -9,14 +9,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
+    <style>
+        .btn {
+            width: 30%;
+            height: 10%;
+        }
+    </style>
     <div class="container">
         <br>
         <h2 style="text-align: center;" id="alpha-val">ALPHA: </h2>
         <h2 style="text-align: center;" id="beta-val">BETA: </h2>
-        <button class="btn btn-success btn-xl" id="shoot">SHOOT</button>
+        <button class="btn btn-primary btn-xl" id="shoot">SHOOT</button><br><br><br>
+        <button class="btn btn-danger btn-xl" id="switch">OFF</button>
         <script>
-            let alpha, beta, gamma;
+            let alpha, beta, gamma
             let finishCalibrate = false
+            let status = true
 
             window.ondeviceorientation = function(event) {
                 alpha = Math.round(event.alpha)
@@ -27,14 +35,26 @@
             }
 
             setInterval(function(){ 
-                if (finishCalibrate) {
+                if (status && finishCalibrate) {
                     $.get('http://' + document.domain + ':' + location.port + '/shoot/' + alpha + '/' + beta + '/0/20', function( data ) {
                         console.log(data)
                     });
                 }
             }, 200);
+
+            $('#switch').click(function() {
+                status = !status
+                if (status) {
+                    $(this).attr('class', 'btn btn-danger btn-xl')
+                    $(this).text('OFF')
+                } else {
+                    $(this).attr('class', 'btn btn-success btn-xl')
+                    $(this).text('ON')
+                }
+            })
             
             $("#shoot").click(function() {
+                if (!status) return;
                 if (!finishCalibrate) {
                     $.get('http://' + document.domain + ':' + location.port + '/calibrate/' + alpha + '/' + beta + '/0/20', function( data ) {
                         console.log(data)
